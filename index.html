@@ -12,15 +12,25 @@
       background: #444;
       margin: 0;
       font-family: sans-serif;
-      gap: 40px;
+      height: 100vh;
     }
-    .flexblock {
+    .flexblockone {
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: 100vh;
       justify-content: center;
       gap: 20px;
+      position: absolute;
+      z-index: 1;
+    }
+    .flexblocktwo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      position: absolute;
+      z-index: 2;
     }
     .vidwrapper {
       position: relative;
@@ -33,40 +43,56 @@
       position: absolute;
       top: 0;
       left: 30px;
-      max-height: 60px;
+      max-height: 80px;
     }
     h1 {
       font-size: 1rem;
       color: #AAA;
       margin: 0;
     }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background: crimson;
+      color: #fff;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+    }
+    button:hover {
+      background: #888;
+    }
   </style>
 </head>
 <body>
 
-  <div class="flexblock">
+  <button onclick="toggleFlexBlockTwo()">Toggle Vehicle</button>
+
+  <div class="flexblockone">
     <div class="vidwrapper">
-      <video class="vid" width="747" height="420" muted playsinline preload="auto" id="video1">
+      <video class="vid" width="960" height="540" muted playsinline preload="auto" id="video1">
         <source src="01.mp4" type="video/mp4" />
       </video>
       <img class="logo" src="logo.svg" alt="logo">
     </div>
-    <h1>Studio v1 (x64 Frames)</h1>
   </div>
 
-  <div class="flexblock">
+  <div class="flexblocktwo" id="flexblocktwo">
     <div class="vidwrapper">
-      <video class="vid" width="747" height="420" muted playsinline preload="auto" id="video2">
+      <video class="vid" width="960" height="540" muted playsinline preload="auto" id="video2">
         <source src="01-demo.mp4" type="video/mp4" />
       </video>
       <img class="logo" src="logo.svg" alt="logo">
     </div>
-    <h1>Studio v1 (x64 Frames) Demo Vehicle</h1>
   </div>
 
   <script>
     const video1 = document.getElementById('video1');
     const video2 = document.getElementById('video2');
+    const flexblocktwo = document.getElementById('flexblocktwo');
 
     function waitUntilCanPlay(video) {
       return new Promise(resolve => {
@@ -87,12 +113,18 @@
         video1.play();
         video2.play();
 
-        // Schedule the next loop exactly at duration end
         setTimeout(syncPlay, duration * 1000);
       }
 
-      // Initial play
       syncPlay();
+    }
+
+    function toggleFlexBlockTwo() {
+      if (flexblocktwo.style.display === 'none' || getComputedStyle(flexblocktwo).display === 'none') {
+        flexblocktwo.style.display = 'flex';
+      } else {
+        flexblocktwo.style.display = 'none';
+      }
     }
 
     window.addEventListener('load', syncPlayLoop);
